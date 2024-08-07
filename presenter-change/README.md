@@ -18,19 +18,19 @@ This project contains a bash script that allows you to change the default PDF do
 1. Clone this repository to your server:
 
    ```bash
-   git clone https://github.com/your-username/bigbluebutton-default-pdf-changer.git
+   git clone https://github.com/strwise/bbb-mods.git
    ```
 
 2. Navigate to the project directory:
 
    ```bash
-   cd bigbluebutton-default-pdf-changer
+   cd presenter-change
    ```
 
 3. Execute the script:
 
    ```bash
-   ./src/change_default_pdf.sh
+   ./src/run.sh
    ```
 
 4. When prompted, enter the path to the new PDF document. This can be either a local file path or a valid remote link.
@@ -45,7 +45,7 @@ Execute the script directly:
 
 ```bash
 
-curl https://github.com/strwise/bbb-mods/blob/main/bigbluebutton-default-pdf-changer/src/change_default_pdf.sh | bash
+curl https://github.com/strwise/bbb-mods/blob/main/presenter-change/src/run.sh | bash
 
 ```
 
@@ -54,7 +54,8 @@ curl https://github.com/strwise/bbb-mods/blob/main/bigbluebutton-default-pdf-cha
 Here's an example of how to use the script:
 
 ```bash
-./src/change_default_pdf.sh
+
+curl https://github.com/strwise/bbb-mods/blob/main/presenter-change/src/run.sh | bash
 
 Enter the path to the new PDF document: /path/to/new/document.pdf
 

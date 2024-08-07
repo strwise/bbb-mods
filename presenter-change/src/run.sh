@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# ########################################################################
+#
 # Script to change the default PDF presentation used by BigBlueButton.
 #
 # The script prompts the user to enter the path to a new PDF document.
@@ -7,7 +9,10 @@
 # https://docs.bigbluebutton.org/administration/customize/#change-the-default-presentation
 #
 # Credits: This script is based on the instructions provided in the official BigBlueButton documentation.
+#
 # Author: StreamWise - https://www.streamwise.app/
+#
+# ########################################################################
 
 # Check if the user is root
 if [ "$(id -u)" != "0" ]; then
