@@ -34,7 +34,7 @@ read -r -p "Enter the path to the new PDF document: " pdf_path
 echo "Entered PDF path: $pdf_path"
 
 # Check if the user has provided a local or remote path to the PDF document
-if [[ $pdf_path =~ ^(https?:\/\/)[\w.-]+(\.[\w]+)+([\w.,@?^=%&amp;\/:+#]*) ]]; then
+if [[ "$pdf_path" =~ ^(https?:\/\/)[\w.-]+(\.[\w]+)+([\w.,@?^=%&amp;\/:+#]*) ]]; then
     echo "Downloading PDF from remote location..."
     # Define a temporary path to store the downloaded PDF
     temp_pdf="/tmp/downloaded_presentation.pdf"
