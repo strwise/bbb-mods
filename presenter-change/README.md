@@ -65,4 +65,11 @@ Document successfully replaced.
 
 Please ensure that you have the necessary permissions and meet the prerequisites before executing the script.
 
+## Contributing
+
+Contributions are welcome! If you have any suggestions, improvements, or bug fixes, please feel free to open an issue or submit a pull request.
+
+## License
+
 This project is licensed under the [MIT License](LICENSE).
+```
