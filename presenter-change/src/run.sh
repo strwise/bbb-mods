@@ -28,9 +28,12 @@ fi
 
 
 # Prompt the user to enter the path to the new PDF document
-read -p "Enter the path to the new PDF document: " pdf_path
+read -r -p "Enter the path to the new PDF document: " pdf_path
 
-# check if the user has provided a local or remote path to the PDF document
+# Debugging: Print the entered path
+echo "Entered PDF path: $pdf_path"
+
+# Check if the user has provided a local or remote path to the PDF document
 if [[ "$pdf_path" =~ ^https?:// ]]; then
     echo "Downloading PDF from remote location..."
     # Define a temporary path to store the downloaded PDF
@@ -41,11 +44,15 @@ if [[ "$pdf_path" =~ ^https?:// ]]; then
     if [ $? -ne 0 ]; then
         echo "Error: Failed to download the PDF document."
         exit 1
+    else
+        echo "PDF downloaded successfully to $temp_pdf"
     fi
-    # Set the PDF path to the downloaded file
-    pdf_path="$temp_pdf"
 else
-    echo "Using local PDF document..."
+    echo "Using local PDF path: $pdf_path"
+    if [ ! -f "$pdf_path" ]; then
+        echo "Error: The specified PDF file does not exist."
+        exit 1
+    fi
 fi
 
 # Check if the document is a PDF
