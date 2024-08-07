@@ -45,7 +45,13 @@ Execute the script directly:
 
 ```bash
 
-curl https://raw.githubusercontent.com/strwise/bbb-mods/main/presenter-change/src/run.sh | bash <PDF_PATH>
+curl -fsSL https://raw.githubusercontent.com/strwise/bbb-mods/main/presenter-change/src/run.sh -o bbb-presenter-change.sh
+
+```
+
+```bash
+
+bash bbb-presenter-change.sh -p <PDF_PATH>
 
 ```
 
@@ -55,10 +61,14 @@ Here's an example of how to use the script:
 
 ```bash
 
-$ curl https://raw.githubusercontent.com/strwise/bbb-mods/main/presenter-change/src/run.sh | bash https://url/document.pdf
+$ curl -fsSL https://raw.githubusercontent.com/strwise/bbb-mods/main/presenter-change/src/run.sh -o bbb-presenter-change.sh
+
+$ bash bbb-presenter-change.sh -p https://s3.example.com/presenter.pdf
 
 $ Replacing the default PDF document with /path/to/new/document.pdf...
+
 $ Document successfully replaced.
+
 ```
 
 Please ensure that you have the necessary permissions and meet the prerequisites before executing the script.
