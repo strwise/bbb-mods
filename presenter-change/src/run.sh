@@ -35,11 +35,13 @@ presentation_path="/var/www/bigbluebutton-default/assets"
 pdf_name="default.pdf"
 
 # If has no arguments, prompt the user to enter the desired PDF document
-if [ "$#" -eq 0 ]; then
+# if [ "$#" -eq 0 ]; then
+if [ "$1" == "-p" ]; then
+    pdf_path="$2"
+
+else
     # Prompt the user to enter the path to the new PDF document
     read -r -p "Enter the path to the new PDF document: " pdf_path
-else
-    pdf_path="$1"
 fi
 
 
