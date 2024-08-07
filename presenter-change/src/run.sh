@@ -34,11 +34,17 @@ temp_pdf="/tmp/$(date +%s)_bbb_downloaded_presentation.pdf"
 presentation_path="/var/www/bigbluebutton-default/assets"
 pdf_name="default.pdf"
 
-# Prompt the user to enter the path to the new PDF document
-read -r -p "Enter the path to the new PDF document: " pdf_path
+# If has no arguments, prompt the user to enter the desired PDF document
+if [ "$#" -eq 0 ]; then
+    # Prompt the user to enter the path to the new PDF document
+    read -r -p "Enter the path to the new PDF document: " pdf_path
+else
+    pdf_path="$1"
+fi
 
-# Debugging: Print the entered path
-echo "Entered PDF path: $pdf_path"
+
+# Debugging: Print the entered path in green
+echo -e "\e[32mEntered PDF path: $pdf_path\e[0m"
 
 # Check if the user has provided a local or remote path to the PDF document
 #if [[ "$pdf_path" =~ ^(https?:\/\/)[\w.-]+(\.[\w]+)+([\w.,@?^=%&amp;\/:+#]*) ]]; then
