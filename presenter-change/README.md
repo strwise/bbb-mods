@@ -45,7 +45,7 @@ Execute the script directly:
 
 ```bash
 
-curl https://github.com/strwise/bbb-mods/blob/main/presenter-change/src/run.sh | bash
+curl https://raw.githubusercontent.com/strwise/bbb-mods/main/presenter-change/src/run.sh | bash
 
 ```
 
@@ -55,7 +55,7 @@ Here's an example of how to use the script:
 
 ```bash
 
-curl https://github.com/strwise/bbb-mods/blob/main/presenter-change/src/run.sh | bash
+curl https://raw.githubusercontent.com/strwise/bbb-mods/main/presenter-change/src/run.sh | bash
 
 Enter the path to the new PDF document: /path/to/new/document.pdf
 
