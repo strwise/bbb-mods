@@ -33,7 +33,7 @@ This project contains a bash script that allows you to change the default PDF do
    ./src/run.sh
    ```
 
-4. When prompted, enter the path to the new PDF document. This can be either a local file path or a valid remote link.
+4. When prompted, enter the path to the new PDF document. This can be either a **local file path or a valid remote link**.
 
 5. The script will verify if the document is a PDF and replace the default PDF used by BigBlueButton with the new document.
 
@@ -45,7 +45,7 @@ Execute the script directly:
 
 ```bash
 
-curl https://raw.githubusercontent.com/strwise/bbb-mods/main/presenter-change/src/run.sh | bash
+curl https://raw.githubusercontent.com/strwise/bbb-mods/main/presenter-change/src/run.sh | bash <PDF_PATH>
 
 ```
 
@@ -55,12 +55,10 @@ Here's an example of how to use the script:
 
 ```bash
 
-curl https://raw.githubusercontent.com/strwise/bbb-mods/main/presenter-change/src/run.sh | bash
+$ curl https://raw.githubusercontent.com/strwise/bbb-mods/main/presenter-change/src/run.sh | bash https://url/document.pdf
 
-Enter the path to the new PDF document: /path/to/new/document.pdf
-
-Replacing the default PDF document with /path/to/new/document.pdf...
-Document successfully replaced.
+$ Replacing the default PDF document with /path/to/new/document.pdf...
+$ Document successfully replaced.
 ```
 
 Please ensure that you have the necessary permissions and meet the prerequisites before executing the script.
