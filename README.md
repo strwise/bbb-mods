@@ -1,7 +1,4 @@
-andrekutianski: @workspace  write a compelling main README for this project
-
-Workspace: ```markdown
-# bbb-mods
+# BigBlueButton Mods
 
 Welcome to the **bbb-mods** project! This repository contains a collection of scripts designed to enhance and customize your BigBlueButton server bring to you by [StreamWise](https://www.streamwise.app). Whether you need to increase the page limit for uploads or change the default PDF presentation, our scripts make it easy to apply these modifications.
 
