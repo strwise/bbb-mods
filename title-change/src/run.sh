@@ -41,4 +41,4 @@ yq w -i $TARGET public.app.clientTitle "$title"
 chown meteor:meteor $TARGET
 
 #show echo in green color
-echo -e "\e[32mThe default locale for BigBlueButton has been set to: ${title}.\e[0m"
+echo -e "\e[32mThe default title for BigBlueButton has been set to: ${title}.\e[0m"
