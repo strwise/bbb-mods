@@ -7,7 +7,7 @@
 # The script prompts the user to enter the desired locale.
 # https://docs.bigbluebutton.org/administration/customize/#change-title-in-the-html5-client
 #
-#
+# Repository: https://github.com/strwise/bbb-mods
 # Author: StreamWise - https://www.streamwise.app/
 #
 # ########################################################################
@@ -105,15 +105,26 @@ set_max_file_size() {
     usage_err "Invalid input. Please enter a positive integer."
   fi
 
-  # add or update maxFileSizeUpload in bbb-web.properties
-  sed -i "s/^maxFileSizeUpload=.*/maxFileSizeUpload=$MAX_FILE_SIZE/" $BBB_PROPERTIES
+  # convert $MAX_FILE_SIZE to bytes
+  MAX_FILE_SIZE_BYTES=$((MAX_FILE_SIZE * 1024 * 1024))
 
-  # update uploadSizeMax
-  yq w -i $BBB_SETTINGS public.defaultSettings.presentation.uploadSizeMax "$MAX_FILE_SIZE"
+  # add or update maxFileSizeUpload in BBB properties
+  sed -i "s/^maxFileSizeUpload=.*/maxFileSizeUpload=$MAX_FILE_SIZE_BYTES/" $BBB_PROPERTIES
+
+  # update uploadSizeMax in BBB settings
+  yq w -i $BBB_SETTINGS public.presentation.mirroredFromBBBCore.uploadSizeMax "$MAX_FILE_SIZE_BYTES"
+
+  # update nginx client_max_body_size
+  # check if BBB is equal or greater than 2.5
+  if dpkg --compare-versions "$(dpkg-query --showformat='${Version}' --show bigbluebutton)" ge 2.5; then
+      sed -i "s/client_max_body_size [0-9]*m;/client_max_body_size $MAX_FILE_SIZE;/g" /usr/share/bigbluebutton/nginx/web.nginx
+    else
+      sed -i "s/client_max_body_size [0-9]*m;/client_max_body_size $MAX_FILE_SIZE;/g" /etc/bigbluebutton/nginx/web.nginx
+  fi
 
   say "Maximum file size for uploads has been set to $MAX_FILE_SIZE MB."
-  say "Maximum post size for uploads has been set to $MAX_FILE_SIZE MB."
   say "Please restart the BigBlueButton server to apply the changes."
+  say "Please restart the Nginx server to apply the changes."
 
 }
 
