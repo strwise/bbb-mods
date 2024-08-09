@@ -11,6 +11,8 @@
 #
 # ########################################################################
 
+TARGET="/usr/share/meteor/bundle/programs/server/assets/app/config/settings.yml"
+
 # Check if the user is root
 if [ "$(id -u)" != "0" ]; then
     echo "Error: This script must be executed as root."
@@ -39,10 +41,8 @@ if [[ ! "$locale" =~ ^[a-z]{2}(_[A-Z]{2})?$ ]]; then
     exit 1
 fi
 
-# Update the BigBlueButton server configuration file
-# https://github.com/bigbluebutton/bigbluebutton/issues/8336#issuecomment-557235107
-config_file="/usr/share/meteor/bundle/programs/server/assets/app/config/settings.yml"
-sed -i "s/overrideLocale:.*/overrideLocale: ${locale}/" "$config_file"
+# Update the BigBlueButton server configuration file for overrideLocale
+yq w -i $TARGET public.app.defaultSettings.application.overrideLocale "$locale"
 
 #show echo in green color
-echo -e "\e[32mThe default locale for BigBlueButton has been set to ${locale}.\e[0m"
+echo -e "\e[32mThe default locale for BigBlueButton has been set to: ${locale}.\e[0m"
