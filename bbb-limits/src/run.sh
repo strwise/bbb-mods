@@ -1,0 +1,140 @@
+#!/bin/bash -e
+
+# ########################################################################
+#
+# Script to change the default title of the BigBlueButton HTML5 client.
+#
+# The script prompts the user to enter the desired locale.
+# https://docs.bigbluebutton.org/administration/customize/#change-title-in-the-html5-client
+#
+#
+# Author: StreamWise - https://www.streamwise.app/
+#
+# ########################################################################
+
+
+# Check if the user is root
+check_root() {
+  if [ $EUID != 0 ]; then err "You must run this command as root."; fi
+}
+
+# Check if the environment is a server running BigBlueButton using bbb-conf command
+check_bbb() {
+  if ! command -v bbb-conf > /dev/null; then
+    err "This script is intended to be executed on a BigBlueButton server."
+  fi
+}
+
+usage() {
+  set +x
+  cat 1>&2 <<HERE
+
+Script to change some limits in BigBlueButton.
+
+OPTIONS:
+
+  -h, --help
+    Show this help message.
+
+  --page-limit <limit>
+    Set the page limit for uploads.
+
+  --max-file-size <size>
+    Set the maximum file size for uploads (MB).
+
+  --annotation-limit <limit>
+    Set the annotation limit for BigBlueButton.
+
+HERE
+}
+
+main() {
+
+  BBB_SETTINGS="/usr/share/meteor/bundle/programs/server/assets/app/config/settings.yml"
+  BBB_PROPERTIES="/etc/bigbluebutton/bbb-web.properties"
+
+  check_root
+
+  build_args "$@"
+
+}
+
+build_args() {
+  while [[ $# -gt 0 ]]; do
+    arg_key="$1"
+    arg_val="$2"
+    case $arg_key in
+      -h|--help) usage; exit 0 ;;
+      --page-limit) PAGE_LIMIT=$arg_val; shift ;;
+      --max-file-size) MAX_FILE_SIZE=$arg_val; shift ;;
+      --annotation-limit) ANNOTATION_LIMIT=$arg_val; shift ;;
+      *) usage_err "Unknown argument: $arg_key" ;;
+    esac
+    shift
+  done
+}
+
+say() {
+  echo "bbb-mods: $1"
+}
+
+err() {
+  say "$1" >&2
+  exit 1
+}
+
+usage_err() {
+  say "$1" >&2
+  usage
+  exit 1
+}
+
+#
+# Change the file size for an uploaded presentation
+# https://docs.bigbluebutton.org/administration/customize/#increase-the-file-size-for-an-uploaded-presentation
+#
+set_max_file_size() {
+
+  check_bbb
+
+  if [ -z "$MAX_FILE_SIZE" ]; then
+    usage_err "You must provide a maximum file size."
+  fi
+
+  if ! [[ "$MAX_FILE_SIZE" =~ ^[0-9]+$ ]]; then
+    usage_err "Invalid input. Please enter a positive integer."
+  fi
+
+  # add or update maxFileSizeUpload in bbb-web.properties
+  sed -i "s/^maxFileSizeUpload=.*/maxFileSizeUpload=$MAX_FILE_SIZE/" $BBB_PROPERTIES
+
+  # update uploadSizeMax
+  yq w -i $BBB_SETTINGS public.defaultSettings.presentation.uploadSizeMax "$MAX_FILE_SIZE"
+
+  say "Maximum file size for uploads has been set to $MAX_FILE_SIZE MB."
+  say "Maximum post size for uploads has been set to $MAX_FILE_SIZE MB."
+  say "Please restart the BigBlueButton server to apply the changes."
+
+}
+
+page_limit() {
+
+  check_bbb
+
+  if [ -z "$PAGE_LIMIT" ]; then
+    usage_err "You must provide a page limit."
+  fi
+
+  if ! [[ "$PAGE_LIMIT" =~ ^[0-9]+$ ]]; then
+    usage_err "Invalid input. Please enter a positive integer."
+  fi
+
+  # add or update maxNumPages in bbb-web.properties
+  sed -i "s/^maxNumPages=.*/maxNumPages=$PAGE_LIMIT/" $BBB_PROPERTIES
+
+  say "Page limit for uploads has been set to $PAGE_LIMIT."
+  say "Please restart the BigBlueButton server to apply the changes."
+
+}
+
+main "$@" || exit 1
