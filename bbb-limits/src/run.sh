@@ -50,8 +50,10 @@ HERE
 
 main() {
 
-  BBB_SETTINGS="/usr/share/meteor/bundle/programs/server/assets/app/config/settings.yml"
-  BBB_PROPERTIES="/etc/bigbluebutton/bbb-web.properties"
+  # touch bbb-html5.yml as this override meteor settings (no need touch main file)
+  HTML5_ETC_CONFIG="/etc/bigbluebutton/bbb-html5.yml"
+  # bbb web etc config file values override main bbb web properties
+  BBB_WEB_ETC_CONFIG="/etc/bigbluebutton/bbb-web.properties"
 
   check_root
 
@@ -65,9 +67,9 @@ build_args() {
     arg_val="$2"
     case $arg_key in
       -h|--help) usage; exit 0 ;;
-      --page-limit) PAGE_LIMIT=$arg_val; shift ;;
-      --max-file-size) MAX_FILE_SIZE=$arg_val; shift ;;
-      --annotation-limit) ANNOTATION_LIMIT=$arg_val; shift ;;
+      --page-limit|-p) page_limit PAGE_LIMIT=$arg_val; shift ;;
+      --max-file-size|-s) set_max_file_size MAX_FILE_SIZE=$arg_val; shift ;;
+      --annotation-limit|-a) ANNOTATION_LIMIT=$arg_val; shift ;;
       *) usage_err "Unknown argument: $arg_key" ;;
     esac
     shift
@@ -109,10 +111,10 @@ set_max_file_size() {
   MAX_FILE_SIZE_BYTES=$((MAX_FILE_SIZE * 1024 * 1024))
 
   # add or update maxFileSizeUpload in BBB properties
-  sed -i "s/^maxFileSizeUpload=.*/maxFileSizeUpload=$MAX_FILE_SIZE_BYTES/" $BBB_PROPERTIES
+  sed -i "s/^maxFileSizeUpload=.*/maxFileSizeUpload=$MAX_FILE_SIZE_BYTES/" $BBB_WEB_ETC_CONFIG
 
   # update uploadSizeMax in BBB settings
-  yq w -i $BBB_SETTINGS public.presentation.mirroredFromBBBCore.uploadSizeMax "$MAX_FILE_SIZE_BYTES"
+  yq w -i $HTML5_ETC_CONFIG public.presentation.mirroredFromBBBCore.uploadSizeMax "$MAX_FILE_SIZE_BYTES"
 
   # update nginx client_max_body_size
   # check if BBB is equal or greater than 2.5
@@ -141,7 +143,7 @@ page_limit() {
   fi
 
   # add or update maxNumPages in bbb-web.properties
-  sed -i "s/^maxNumPages=.*/maxNumPages=$PAGE_LIMIT/" $BBB_PROPERTIES
+  sed -i "s/^maxNumPages=.*/maxNumPages=$PAGE_LIMIT/" $BBB_WEB_ETC_CONFIG
 
   say "Page limit for uploads has been set to $PAGE_LIMIT."
   say "Please restart the BigBlueButton server to apply the changes."
