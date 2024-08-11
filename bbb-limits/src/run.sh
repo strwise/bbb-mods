@@ -124,14 +124,14 @@ set_max_file_size() {
 
       # if file /usr/share/bigbluebutton/nginx/web.nginx exists
       if [ -f /usr/share/bigbluebutton/nginx/web.nginx ]; then
-        sed -i "s/client_max_body_size [0-9]*m;/client_max_body_size $MAX_FILE_SIZE;/g" /usr/share/bigbluebutton/nginx/web.nginx
+        sed -i "s/client_max_body_size.*;/client_max_body_size {$MAX_FILE_SIZE}m;/g" /usr/share/bigbluebutton/nginx/web.nginx
       else
         err "File /usr/share/bigbluebutton/nginx/web.nginx not found."
       fi
     else
       # if file /etc/bigbluebutton/nginx/web.nginx exists
       if [ -f /etc/bigbluebutton/nginx/web.nginx ]; then
-        sed -i "s/client_max_body_size [0-9]*m;/client_max_body_size $MAX_FILE_SIZE;/g" /etc/bigbluebutton/nginx/web.nginx
+        sed -i "s/client_max_body_size.*;/client_max_body_size {$MAX_FILE_SIZE}m;/g" /etc/bigbluebutton/nginx/web.nginx
       else
         err "File /etc/bigbluebutton/nginx/web.nginx not found."
       fi
