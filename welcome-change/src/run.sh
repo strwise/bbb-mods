@@ -62,8 +62,8 @@ build_args() {
     arg_val="$2"
     case $arg_key in
       -h|--help) usage; exit 0 ;;
-      -m|--message) change_welcome_message "$arg_val"; shift ;;
-      -f|--footer) change_footer_message "$arg_val"; shift ;;
+      -m|--message) change_welcome_message $arg_val; shift ;;
+      -f|--footer) change_footer_message $arg_val; shift ;;
       *) usage_err "Unknown argument: $arg_key" ;;
     esac
     shift
@@ -86,31 +86,24 @@ usage_err() {
 }
 
 change_welcome_message() {
-
   check_bbb
-
-  # if argument empty, defaults to <b>%%CONFNAME%%</b>
   MESSAGE=${1:-"<b>%%CONFNAME%%</b>"}
-
-  sed -i "s/^defaultWelcomeMessage=.*/defaultWelcomeMessage=$MESSAGE/" $BBB_WEB_ETC_CONFIG
-
+  if grep -q "^defaultWelcomeMessage=" "$BBB_WEB_ETC_CONFIG"; then
+    sed -i "s/^defaultWelcomeMessage=.*/defaultWelcomeMessage=$MESSAGE/" "$BBB_WEB_ETC_CONFIG"
+  else
+    echo "defaultWelcomeMessage=$MESSAGE" >> "$BBB_WEB_ETC_CONFIG"
+  fi
   say "Welcome message changed to: $MESSAGE"
-
 }
 
 # change defaultWelcomeMessageFooter
 change_footer_message() {
-
-    check_bbb
-
-    MESSAGE=$1
-
-    # add or update defaultWelcomeMessageFooter on BBB_WEB_ETC_CONFIG
-    if ! grep -q "^defaultWelcomeMessageFooter=" $BBB_WEB_ETC_CONFIG; then
-      echo "defaultWelcomeMessageFooter=$MESSAGE" >> $BBB_WEB_ETC_CONFIG
-    else
-      sed -i "s/^defaultWelcomeMessageFooter=.*/defaultWelcomeMessageFooter=$MESSAGE/" $BBB_WEB_ETC_CONFIG
-    fi
-
-    say "Footer message changed to: $MESSAGE"
+  check_bbb
+  MESSAGE=$1
+  if grep -q "^defaultWelcomeMessageFooter" "$BBB_WEB_ETC_CONFIG"; then
+    sed -i "s/^defaultWelcomeMessageFooter=.*/defaultWelcomeMessageFooter=$MESSAGE/" $BBB_WEB_ETC_CONFIG
+  else
+    echo "defaultWelcomeMessageFooter=$MESSAGE" >> "$BBB_WEB_ETC_CONFIG"
+  fi
+  say "Footer message changed to: $MESSAGE"
 }
