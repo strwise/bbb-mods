@@ -87,16 +87,12 @@ usage_err() {
 
 change_welcome_message() {
 
-  MESSAGE=$1
-  # if BBB_WEB_ETC_CONFIG empty, defaults to <b>%%CONFNAME%%</b>
-  MESSAGE=${MESSAGE:-"<b>Welcome to <b>%%CONFNAME%%</b></b>"}
+  check_bbb
 
-  # add or update defaultWelcomeMessage on BBB_WEB_ETC_CONFIG
-  if ! grep -q "^defaultWelcomeMessage=" $BBB_WEB_ETC_CONFIG; then
-    echo "defaultWelcomeMessage=$MESSAGE" >> $BBB_WEB_ETC_CONFIG
-  else
-    sed -i "s/^defaultWelcomeMessage=.*/defaultWelcomeMessage=$MESSAGE/" $BBB_WEB_ETC_CONFIG
-  fi
+  # if argument empty, defaults to <b>%%CONFNAME%%</b>
+  MESSAGE=${1:-"<b>%%CONFNAME%%</b>"}
+
+  sed -i "s/^defaultWelcomeMessage=.*/defaultWelcomeMessage=$MESSAGE/" $BBB_WEB_ETC_CONFIG
 
   say "Welcome message changed to: $MESSAGE"
 
@@ -104,6 +100,8 @@ change_welcome_message() {
 
 # change defaultWelcomeMessageFooter
 change_footer_message() {
+
+    check_bbb
 
     MESSAGE=$1
 
