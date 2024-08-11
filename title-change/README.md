@@ -16,22 +16,16 @@ Welcome to the **bbb-mods** project! This repository contains a collection of sc
    cd title-change
    ```
 
-3. Make the script executable:
+3. Run the script:
 
    ```bash
-   chmod +x src/run.sh
-   ```
-
-4. Run the script:
-
-   ```bash
-   ./src/run.sh
+   bash ./src/run.sh
    ```
 
    You can pass the desired title as a parameter:
 
    ```bash
-   ./src/run.sh -p "New Title"
+   bash ./src/run.sh -p "New Title"
    ```
 
 For more detailed instructions, refer to the [official BigBlueButton documentation](https://docs.bigbluebutton.org/administration/customize/#change-title-in-the-html5-client).
@@ -42,7 +36,7 @@ Contributions are welcome! If you have any suggestions, improvements, or bug fix
 
 ## License
 
-This project is licensed under the [MIT License](../LICENSE).
+This project is licensed under the [Apache 2.0 License](../LICENSE).
 
 ## Contact
 
