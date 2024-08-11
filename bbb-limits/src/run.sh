@@ -36,13 +36,13 @@ OPTIONS:
   -h, --help
     Show this help message.
 
-  --page-limit <limit>
+  -p, --page-limit <limit>
     Set the page limit for uploads.
 
-  --max-file-size <size>
+  -s, --max-file-size <size>
     Set the maximum file size for uploads (MB).
 
-  --annotation-limit <limit>
+  -a, --annotation-limit <limit>
     Set the annotation limit for BigBlueButton.
 
 HERE
@@ -67,8 +67,8 @@ build_args() {
     arg_val="$2"
     case $arg_key in
       -h|--help) usage; exit 0 ;;
-      --page-limit|-p) page_limit PAGE_LIMIT=$arg_val; shift ;;
-      --max-file-size|-s) set_max_file_size MAX_FILE_SIZE=$arg_val; shift ;;
+      --page-limit|-p) page_limit $arg_val; shift ;;
+      --max-file-size|-s) set_max_file_size $arg_val; shift ;;
       --annotation-limit|-a) ANNOTATION_LIMIT=$arg_val; shift ;;
       *) usage_err "Unknown argument: $arg_key" ;;
     esac
@@ -98,6 +98,8 @@ usage_err() {
 set_max_file_size() {
 
   check_bbb
+
+  MAX_FILE_SIZE=$1
 
   if [ -z "$MAX_FILE_SIZE" ]; then
     usage_err "You must provide a maximum file size."
@@ -133,6 +135,8 @@ set_max_file_size() {
 page_limit() {
 
   check_bbb
+
+  PAGE_LIMIT=$1
 
   if [ -z "$PAGE_LIMIT" ]; then
     usage_err "You must provide a page limit."
