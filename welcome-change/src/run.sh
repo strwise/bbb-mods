@@ -46,14 +46,10 @@ HERE
 }
 
 main() {
-
   # bbb web etc config file values override main bbb web properties
   BBB_WEB_ETC_CONFIG="/etc/bigbluebutton/bbb-web.properties"
-
   check_root
-
   build_args "$@"
-
 }
 
 build_args() {
@@ -62,8 +58,8 @@ build_args() {
     arg_val="$2"
     case $arg_key in
       -h|--help) usage; exit 0 ;;
-      -m|--message) change_welcome_message $arg_val; shift ;;
-      -f|--footer) change_footer_message $arg_val; shift ;;
+      -m|--message) change_welcome_message "$arg_val"; shift ;;
+      -f|--footer) change_footer_message "$arg_val"; shift ;;
       *) usage_err "Unknown argument: $arg_key" ;;
     esac
     shift
@@ -107,3 +103,5 @@ change_footer_message() {
   fi
   say "Footer message changed to: $MESSAGE"
 }
+
+main "$@" || exit 1
