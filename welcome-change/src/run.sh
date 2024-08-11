@@ -62,8 +62,8 @@ build_args() {
     arg_val="$2"
     case $arg_key in
       -h|--help) usage; exit 0 ;;
-      -m|--message) change_welcome_message MESSAGE="$arg_val"; shift ;;
-      -f|--footer) change_footer_message MESSAGE="$arg_val"; shift ;;
+      -m|--message) change_welcome_message "$arg_val"; shift ;;
+      -f|--footer) change_footer_message "$arg_val"; shift ;;
       *) usage_err "Unknown argument: $arg_key" ;;
     esac
     shift
@@ -87,6 +87,7 @@ usage_err() {
 
 change_welcome_message() {
 
+  MESSAGE=$1
   # if BBB_WEB_ETC_CONFIG empty, defaults to <b>%%CONFNAME%%</b>
   MESSAGE=${MESSAGE:-"<b>Welcome to <b>%%CONFNAME%%</b></b>"}
 
@@ -103,6 +104,8 @@ change_welcome_message() {
 
 # change defaultWelcomeMessageFooter
 change_footer_message() {
+
+    MESSAGE=$1
 
     # add or update defaultWelcomeMessageFooter on BBB_WEB_ETC_CONFIG
     if ! grep -q "^defaultWelcomeMessageFooter=" $BBB_WEB_ETC_CONFIG; then
