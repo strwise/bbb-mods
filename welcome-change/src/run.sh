@@ -47,8 +47,9 @@ HERE
 
 main() {
   # bbb web etc config file values override main bbb web properties
-  BBB_WEB_ETC_CONFIG="/etc/bigbluebutton/bbb-web.properties"
-  check_root
+#  BBB_WEB_ETC_CONFIG="/etc/bigbluebutton/bbb-web.properties"
+  BBB_WEB_ETC_CONFIG="test"
+#  check_root
   build_args "$@"
 }
 
@@ -82,12 +83,11 @@ usage_err() {
 }
 
 change_welcome_message() {
-  check_bbb
-  MESSAGE=${1:-"<b>%%CONFNAME%%</b>"}
+  MESSAGE=${1:-"%%CONFNAME%%"}
   if grep -q "^defaultWelcomeMessage=" "$BBB_WEB_ETC_CONFIG"; then
-    sed -i "s/^defaultWelcomeMessage=.*/defaultWelcomeMessage=$MESSAGE/" "$BBB_WEB_ETC_CONFIG"
+    sed -i "s/^defaultWelcomeMessage=.*/defaultWelcomeMessage=\"${MESSAGE//\"/\\\"}\"/" "$BBB_WEB_ETC_CONFIG"
   else
-    echo "defaultWelcomeMessage=$MESSAGE" >> "$BBB_WEB_ETC_CONFIG"
+    echo "defaultWelcomeMessage=\"${MESSAGE//\"/\\\"}\"" >> "$BBB_WEB_ETC_CONFIG"
   fi
   say "Welcome message changed to: $MESSAGE"
 }
