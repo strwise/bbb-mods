@@ -120,10 +120,21 @@ set_max_file_size() {
 
   # update nginx client_max_body_size
   # check if BBB is equal or greater than 2.5
-  if dpkg --compare-versions "$(dpkg-query --showformat='${Version}' --show bigbluebutton)" ge 2.5; then
-      sed -i "s/client_max_body_size [0-9]*m;/client_max_body_size $MAX_FILE_SIZE;/g" /usr/share/bigbluebutton/nginx/web.nginx
+  if dpkg --compare-versions "$(dpkg-query --showformat='${Version}' --show bigbluebutton)" ge 1.2.5; then
+
+      # if file /usr/share/bigbluebutton/nginx/web.nginx exists
+      if [ -f /usr/share/bigbluebutton/nginx/web.nginx ]; then
+        sed -i "s/client_max_body_size [0-9]*m;/client_max_body_size $MAX_FILE_SIZE;/g" /usr/share/bigbluebutton/nginx/web.nginx
+      else
+        err "File /usr/share/bigbluebutton/nginx/web.nginx not found."
+      fi
     else
-      sed -i "s/client_max_body_size [0-9]*m;/client_max_body_size $MAX_FILE_SIZE;/g" /etc/bigbluebutton/nginx/web.nginx
+      # if file /etc/bigbluebutton/nginx/web.nginx exists
+      if [ -f /etc/bigbluebutton/nginx/web.nginx ]; then
+        sed -i "s/client_max_body_size [0-9]*m;/client_max_body_size $MAX_FILE_SIZE;/g" /etc/bigbluebutton/nginx/web.nginx
+      else
+        err "File /etc/bigbluebutton/nginx/web.nginx not found."
+      fi
   fi
 
   say "Maximum file size for uploads has been set to $MAX_FILE_SIZE MB."
